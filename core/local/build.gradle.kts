@@ -3,10 +3,11 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt.gradle)
 }
 
 android {
-    namespace = "com.gostock.util"
+    namespace = "com.gostock.local"
     compileSdk = 34
 
     defaultConfig {
@@ -38,13 +39,6 @@ dependencies {
 
     implementation(libs.core.ktx)
 
-    implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.kotlinx.coroutines.android)
-
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-
-    implementation(libs.squareup.moshi)
-    implementation(libs.squareup.moshi.kotlin)
-
 }
