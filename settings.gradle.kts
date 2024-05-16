@@ -15,4 +15,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "note app"
 include(":app")
- 
+include(":core:data")
+include(":core:network")
+include(":core:ui")
+include(":core:util")
+include(":feature:note")
