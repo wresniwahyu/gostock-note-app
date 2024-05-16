@@ -1,4 +1,4 @@
-package com.gostock.note.ui.theme
+package com.gostock.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_email">email</string>
+    <string name="placeholder_email">email</string>
+    <string name="label_password">password</string>
+    <string name="placeholder_password">password</string>
+    <string name="login">LOGIN</string>
+    <string name="label_name">name</string>
+    <string name="placeholder_name">name</string>
+    <string name="register">REGISTER</string>
+</resources>
