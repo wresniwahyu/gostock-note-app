@@ -31,11 +31,11 @@ android {
     productFlavors {
         create("develop") {
             dimension = "environment"
-            buildConfigField("String", "BASE_URL", "\"https://api.mustaka.id/\"")
+            buildConfigField("String", "BASE_URL", "\"https://testnote.gostockrfid.com/api/\"")
         }
         create("production") {
             dimension = "environment"
-            buildConfigField("String", "BASE_URL", "\"https://api.mustaka.id/\"")
+            buildConfigField("String", "BASE_URL", "\"https://testnote.gostockrfid.com/api/\"")
         }
     }
 
