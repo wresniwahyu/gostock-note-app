@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import com.gostock.auth.login.LoginScreen
 import com.gostock.auth.register.RegisterScreen
 import com.gostock.featurenote.addnote.AddNoteScreen
+import com.gostock.featurenote.editnote.EditNoteScreen
 import com.gostock.featurenote.home.HomeScreen
 import com.gostock.featurenote.notedetail.NoteDetailScreen
 import com.gostock.local.UserPref
@@ -33,6 +34,7 @@ fun MainNavigation(userPref: UserPref) {
             )
         }
         composable(Screens.AddNote.route) { AddNoteScreen(navController = navController) }
+
         composable(
             route = Screens.NoteDetail.route,
             arguments = listOf(
@@ -52,6 +54,25 @@ fun MainNavigation(userPref: UserPref) {
                 title = title,
                 note = note,
                 date = date
+            )
+        }
+
+        composable(
+            route = Screens.EditNote.route,
+            arguments = listOf(
+                navArgument("id") { type = NavType.StringType },
+                navArgument("title") { type = NavType.StringType },
+                navArgument("note") { type = NavType.StringType },
+            )
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id").orEmpty()
+            val title = backStackEntry.arguments?.getString("title").orEmpty()
+            val note = backStackEntry.arguments?.getString("note").orEmpty()
+            EditNoteScreen(
+                navController = navController,
+                id = id,
+                title = title,
+                note = note,
             )
         }
 

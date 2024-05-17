@@ -9,4 +9,7 @@ sealed class Screens(val route: String) {
     object NoteDetail : Screens("detail/{id}/{title}/{note}/{date}") {
         fun createRoute(id: String, title: String, note: String, date: String) = "detail/$id/$title/$note/$date"
     }
+    object EditNote : Screens("detail/{id}/{title}/{note}") {
+        fun createRoute(id: String, title: String, note: String) = "detail/$id/$title/$note"
+    }
 }

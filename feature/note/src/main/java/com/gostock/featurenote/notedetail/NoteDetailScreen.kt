@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.gostock.ui.component.AppButton
 import com.gostock.ui.component.AppConfirmDialog
 import com.gostock.ui.theme.LightGrey
+import com.gostock.util.constant.Screens
 import com.gostock.util.extension.showToast
 
 @Composable
@@ -135,7 +136,7 @@ fun NoteDetailScreen(
                 text = "EDIT",
                 isFullButton = false
             ) {
-
+                navController.navigate(Screens.EditNote.createRoute(id, title, note))
             }
 
             AppButton(
