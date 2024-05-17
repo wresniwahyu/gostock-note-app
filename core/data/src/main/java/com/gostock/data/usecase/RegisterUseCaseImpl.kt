@@ -1,5 +1,6 @@
 package com.gostock.data.usecase
 
+import com.gostock.data.model.BaseUiModel
 import com.gostock.data.repository.Repository
 import com.gostock.data.util.ApiResult
 import com.gostock.network.model.RegisterBody
@@ -8,7 +9,7 @@ import javax.inject.Inject
 class RegisterUseCaseImpl @Inject constructor(
     private val repository: Repository
 ) : RegisterUseCase {
-    override suspend fun invoke(name: String, email: String, password: String): ApiResult<Unit> {
+    override suspend fun invoke(name: String, email: String, password: String): ApiResult<BaseUiModel> {
         return repository.register(
             RegisterBody(
                 name = name,

@@ -1,5 +1,6 @@
 package com.gostock.data.usecase
 
+import com.gostock.data.model.BaseUiModel
 import com.gostock.data.util.ApiResult
 
 interface RegisterUseCase {
@@ -7,5 +8,5 @@ interface RegisterUseCase {
         name: String,
         email: String,
         password: String
-    ): ApiResult<Unit>
+    ): ApiResult<BaseUiModel>
 }

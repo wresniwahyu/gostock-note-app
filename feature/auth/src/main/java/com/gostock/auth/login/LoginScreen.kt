@@ -50,7 +50,7 @@ fun LoginScreen(
             when (event) {
                 is LoginViewModel.Event.LoginSuccess -> {
                     navController.navigate(Screens.Home.route) {
-                        popUpTo(Screens.Home.route) { inclusive = true }
+                        popUpTo(0)
                     }
                 }
 
@@ -73,8 +73,6 @@ fun LoginContent(
     navController: NavController,
     viewModel: LoginViewModel
 ) {
-
-    val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 
     var email by remember { mutableStateOf("") }

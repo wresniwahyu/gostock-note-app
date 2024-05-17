@@ -8,11 +8,12 @@ import com.gostock.network.model.RegisterBody
 
 interface Repository {
 
-    suspend fun register(body: RegisterBody): ApiResult<Unit>
+    suspend fun register(body: RegisterBody): ApiResult<BaseUiModel>
     suspend fun login(body: LoginBody): ApiResult<BaseUiModel>
     suspend fun getNotes(): ApiResult<Unit>
     suspend fun postNote(body: PostNoteBody): ApiResult<Unit>
     suspend fun updateBody(id: String, body: PostNoteBody): ApiResult<Unit>
     suspend fun deleteBody(id: String): ApiResult<Unit>
+    suspend fun storeAccessToken(token: String)
 
 }

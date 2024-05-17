@@ -8,5 +8,7 @@ data class BaseResponseDto(
     @Json(name = "success")
     val success: Boolean? = null,
     @Json(name = "message")
-    val message: String? = null
+    val message: String? = null,
+    @Json(name = "data")
+    val data: Any? = null
 )

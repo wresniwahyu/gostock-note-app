@@ -9,7 +9,8 @@ class BaseUiMapper @Inject constructor() : Mapper<BaseResponseDto, BaseUiModel> 
     override fun map(input: BaseResponseDto): BaseUiModel {
         return BaseUiModel(
             success = input.success ?: false,
-            message = input.message.orEmpty()
+            message = input.message.orEmpty(),
+            data = input.data
         )
     }
 }

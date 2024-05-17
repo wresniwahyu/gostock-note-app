@@ -17,7 +17,7 @@ interface ApiService {
     @POST("register")
     suspend fun register(
         @Body body: RegisterBody
-    ): Response<Unit>
+    ): Response<BaseResponseDto>
 
     @POST("login")
     suspend fun login(
