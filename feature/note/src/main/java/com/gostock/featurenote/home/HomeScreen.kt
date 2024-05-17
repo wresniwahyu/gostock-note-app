@@ -1,5 +1,6 @@
 package com.gostock.featurenote.home
 
+import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +44,9 @@ import com.gostock.ui.theme.LightGrey
 import com.gostock.ui.theme.LightPrimaryColor
 import com.gostock.util.constant.Screens
 import com.gostock.util.extension.showToast
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -84,12 +91,31 @@ fun HomeScreenContent(
     userPref: UserPref
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
+    val dateFormatter = remember { SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) }
+    var startDate by remember { mutableStateOf<Long?>(null) }
+    var endDate by remember { mutableStateOf<Long?>(null) }
+
+    val openDatePicker = { onDateSelected: (Long) -> Unit ->
+        val calendar = Calendar.getInstance()
+        DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                calendar.set(year, month, dayOfMonth)
+                onDateSelected(calendar.timeInMillis)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                          navController.navigate(Screens.AddNote.route)
+                    navController.navigate(Screens.AddNote.route)
                 },
                 containerColor = LightPrimaryColor,
                 contentColor = Color.White
@@ -110,7 +136,9 @@ fun HomeScreenContent(
                     viewModel.logout()
                 }
             )
-            TitleSection()
+            TitleSection("") {
+                openDatePicker { startDate = it }
+            }
 
             if (state.notes.isNotEmpty()) {
                 LazyColumn(
@@ -175,7 +203,10 @@ fun HomeHeaderComponent(
 }
 
 @Composable
-fun TitleSection() {
+fun TitleSection(
+    dateRange: String,
+    onDateRangeClicked: () -> Unit
+) {
     Row(
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -189,9 +220,12 @@ fun TitleSection() {
                     shape = RoundedCornerShape(8.dp)
                 )
                 .padding(vertical = 4.dp, horizontal = 8.dp)
+                .clickable {
+                    onDateRangeClicked.invoke()
+                }
         ) {
             Icon(imageVector = Icons.Outlined.DateRange, contentDescription = null)
-            Text(text = "dd/MM/yyyy - dd/MM-yyyy")
+            Text(text = dateRange)
         }
     }
 }

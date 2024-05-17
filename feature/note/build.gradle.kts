@@ -62,6 +62,8 @@ dependencies {
     implementation(project(":core:util"))
     implementation(project(":core:local"))
 
+    implementation("com.google.android.material:material:1.5.0")
+
     // Core Android dependencies
     implementation(libs.activity.compose)
 
