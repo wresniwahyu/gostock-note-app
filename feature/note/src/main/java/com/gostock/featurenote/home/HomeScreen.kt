@@ -44,6 +44,7 @@ import com.gostock.ui.theme.LightGrey
 import com.gostock.ui.theme.LightPrimaryColor
 import com.gostock.util.constant.Screens
 import com.gostock.util.extension.showToast
+import com.gostock.util.extension.toSimpleDate
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -160,7 +161,7 @@ fun HomeScreenContent(
                             },
                             title = item.title,
                             note = item.note,
-                            date = item.createdAt
+                            date = item.createdAt.toSimpleDate() ?: item.createdAt
                         )
                     }
                 }
