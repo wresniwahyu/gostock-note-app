@@ -22,7 +22,12 @@ fun MainNavigation(userPref: UserPref) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(Screens.Login.route) { LoginScreen(navController = navController) }
         composable(Screens.Register.route) { RegisterScreen(navController = navController) }
-        composable(Screens.Home.route) { HomeScreen()} //navController = navController) }
+        composable(Screens.Home.route) {
+            HomeScreen(
+                navController = navController,
+                userPref = userPref
+            )
+        }
 
     }
 }

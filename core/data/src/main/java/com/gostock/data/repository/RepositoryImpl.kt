@@ -5,7 +5,9 @@ import com.gostock.data.util.Mapper
 import com.gostock.data.util.handleApi
 import com.gostock.network.model.BaseResponseDto
 import com.gostock.data.model.BaseUiModel
+import com.gostock.data.model.GetNotesUiModel
 import com.gostock.local.UserPref
+import com.gostock.network.model.GetNotesResponseDto
 import com.gostock.network.model.LoginBody
 import com.gostock.network.model.PostNoteBody
 import com.gostock.network.model.RegisterBody
@@ -18,6 +20,7 @@ class RepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val userPref: UserPref,
     private val baseMapper: Mapper<BaseResponseDto, BaseUiModel>,
+    private val getNotesUiMapper: Mapper<GetNotesResponseDto, GetNotesUiModel>,
 ): Repository {
 
     override suspend fun register(body: RegisterBody): ApiResult<BaseUiModel> {
@@ -32,8 +35,8 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getNotes(): ApiResult<Unit> {
-        return handleApi {
+    override suspend fun getNotes(): ApiResult<GetNotesUiModel> {
+        return handleApi(getNotesUiMapper) {
             apiService.getNotes()
         }
     }
@@ -59,6 +62,18 @@ class RepositoryImpl @Inject constructor(
     override suspend fun storeAccessToken(token: String) {
         withContext(Dispatchers.IO) {
             userPref.accessToken = token
+        }
+    }
+
+    override suspend fun storeUserName(username: String) {
+        withContext(Dispatchers.IO) {
+            userPref.username = username
+        }
+    }
+
+    override suspend fun clearSession() {
+        withContext(Dispatchers.IO) {
+            userPref.clear()
         }
     }
 }

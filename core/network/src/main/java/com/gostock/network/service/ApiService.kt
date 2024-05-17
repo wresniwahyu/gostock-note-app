@@ -1,6 +1,7 @@
 package com.gostock.network.service
 
 import com.gostock.network.model.BaseResponseDto
+import com.gostock.network.model.GetNotesResponseDto
 import com.gostock.network.model.LoginBody
 import com.gostock.network.model.PostNoteBody
 import com.gostock.network.model.RegisterBody
@@ -25,7 +26,7 @@ interface ApiService {
     ): Response<BaseResponseDto>
 
     @GET("notes")
-    suspend fun getNotes(): Response<Unit>
+    suspend fun getNotes(): Response<GetNotesResponseDto>
 
     @POST("note")
     suspend fun postNote(

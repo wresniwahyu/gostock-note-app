@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.rounded.ExitToApp
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -23,28 +24,75 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.gostock.local.UserPref
+import com.gostock.ui.component.LoadingState
 import com.gostock.ui.theme.LightGrey
 import com.gostock.ui.theme.LightPrimaryColor
+import com.gostock.util.constant.Screens
+import com.gostock.util.extension.showToast
 
 @Composable
-fun HomeScreen() {
-    HomeScreenContent()
+fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel(),
+    userPref: UserPref
+) {
+
+    val context = LocalContext.current
+
+    LaunchedEffect(true) {
+        viewModel.getNotes()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.event.collect { event ->
+            when(event) {
+                is HomeViewModel.Event.Logout -> {
+                    navController.navigate(Screens.Login.route) {
+                        popUpTo(0)
+                    }
+                }
+                is HomeViewModel.Event.ShowMessage -> {
+                    context.showToast(event.message)
+                }
+            }
+        }
+    }
+
+    HomeScreenContent(
+        navController = navController,
+        viewModel = viewModel,
+        userPref = userPref
+    )
 }
 
 @Composable
 fun HomeScreenContent(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: HomeViewModel,
+    userPref: UserPref
 ) {
+    val state by viewModel.state.collectAsState()
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* Do something */ },
+                onClick = {
+                          // TODO: navigate into add note
+                },
                 containerColor = LightPrimaryColor,
                 contentColor = Color.White
             ) {
@@ -58,16 +106,30 @@ fun HomeScreenContent(
                 .fillMaxSize()
                 .background(LightGrey)
         ) {
-            HomeHeaderComponent("Wresni Wahyu")
+            HomeHeaderComponent(
+                username = userPref.username,
+                onLogoutClicked = {
+                    viewModel.logout()
+                }
+            )
             TitleSection()
 
-            val items = listOf("test", "test 2", "test 3")
-            LazyColumn(
-                modifier = modifier.weight(1f),
-            ) {
-                itemsIndexed(items) { index, item ->
-                    Text(text = item)
+            if (state.notes.isNotEmpty()) {
+                LazyColumn(
+                    modifier = modifier
+                        .weight(1f)
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                ) {
+                    itemsIndexed(state.notes) { index, item ->
+                        NoteItem(
+                            title = item.title,
+                            note = item.note,
+                            date = item.createdAt
+                        )
+                    }
                 }
+            } else {
+                LoadingState(isLoading = state.isLoading)
             }
         }
     }
@@ -75,7 +137,8 @@ fun HomeScreenContent(
 
 @Composable
 fun HomeHeaderComponent(
-    username: String
+    username: String,
+    onLogoutClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier.padding(16.dp)
@@ -89,7 +152,7 @@ fun HomeHeaderComponent(
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 modifier = Modifier.clickable {
-
+                    onLogoutClicked.invoke()
                 },
                 imageVector = Icons.Rounded.ExitToApp,
                 contentDescription = null,
@@ -123,10 +186,4 @@ fun TitleSection() {
             Text(text = "dd/MM/yyyy - dd/MM-yyyy")
         }
     }
-}
-
-@Preview
-@Composable
-fun HomePrev() {
-    HomeScreenContent()
 }

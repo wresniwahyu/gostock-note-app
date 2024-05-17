@@ -28,8 +28,12 @@ class LoginUseCaseImpl @Inject constructor(
                     try {
                         val jsonObject = JSONObject(it.data.toString().trim())
                         val token: String? = jsonObject.getString("token")
+                        val name: String? = jsonObject.getString("name")
                         token?.let {
                             repository.storeAccessToken(it)
+                        }
+                        name?.let {
+                            repository.storeUserName(it)
                         }
                     } catch (e: Exception) {
                         Log.i("STORE_TOKEN", "failed store token")
