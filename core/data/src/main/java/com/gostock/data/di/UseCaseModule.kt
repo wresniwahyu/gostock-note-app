@@ -1,5 +1,7 @@
 package com.gostock.data.di
 
+import com.gostock.data.usecase.AddNoteUseCase
+import com.gostock.data.usecase.AddNoteUseCaseImpl
 import com.gostock.data.usecase.GetNotesUseCase
 import com.gostock.data.usecase.GetNotesUseCaseImpl
 import com.gostock.data.usecase.LoginUseCase
@@ -36,5 +38,10 @@ abstract class UseCaseModule {
     abstract fun provideLogoutUseCase(
         impl: LogoutUseCaseImpl
     ): LogoutUseCase
+
+    @Binds
+    abstract fun provideAddNoteUseCase(
+        impl: AddNoteUseCaseImpl
+    ): AddNoteUseCase
 
 }

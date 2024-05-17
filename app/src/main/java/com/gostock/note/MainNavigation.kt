@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.gostock.auth.login.LoginScreen
 import com.gostock.auth.register.RegisterScreen
+import com.gostock.featurenote.addnote.AddNoteScreen
 import com.gostock.featurenote.home.HomeScreen
 import com.gostock.local.UserPref
 import com.gostock.util.constant.Screens
@@ -28,6 +29,7 @@ fun MainNavigation(userPref: UserPref) {
                 userPref = userPref
             )
         }
+        composable(Screens.AddNote.route) { AddNoteScreen(navController = navController) }
 
     }
 }
