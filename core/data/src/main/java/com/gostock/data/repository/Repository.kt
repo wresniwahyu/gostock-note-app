@@ -13,8 +13,8 @@ interface Repository {
     suspend fun login(body: LoginBody): ApiResult<BaseUiModel>
     suspend fun getNotes(): ApiResult<GetNotesUiModel>
     suspend fun postNote(body: PostNoteBody): ApiResult<Unit>
-    suspend fun updateBody(id: String, body: PostNoteBody): ApiResult<Unit>
-    suspend fun deleteBody(id: String): ApiResult<Unit>
+    suspend fun updateNote(id: String, body: PostNoteBody): ApiResult<Unit>
+    suspend fun deleteNote(id: String): ApiResult<Unit>
     suspend fun storeAccessToken(token: String)
     suspend fun storeUserName(username: String)
     suspend fun clearSession()

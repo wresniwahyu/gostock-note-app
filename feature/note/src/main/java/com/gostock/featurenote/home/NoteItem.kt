@@ -46,7 +46,9 @@ fun NoteItem(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = date,
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Light,
+                color = Color.Gray
             )
         }
         Text(

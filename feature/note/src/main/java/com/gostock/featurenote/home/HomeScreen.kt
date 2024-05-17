@@ -120,6 +120,16 @@ fun HomeScreenContent(
                 ) {
                     itemsIndexed(state.notes) { index, item ->
                         NoteItem(
+                            modifier = Modifier.clickable {
+                                navController.navigate(
+                                    Screens.NoteDetail.createRoute(
+                                        id = item.id,
+                                        title = item.title,
+                                        note = item.note,
+                                        date = item.createdAt
+                                    )
+                                )
+                            },
                             title = item.title,
                             note = item.note,
                             date = item.createdAt

@@ -5,4 +5,8 @@ sealed class Screens(val route: String) {
     object Register : Screens("auth/register")
     object Home : Screens("home")
     object AddNote : Screens("note/add")
+
+    object NoteDetail : Screens("detail/{id}/{title}/{note}/{date}") {
+        fun createRoute(id: String, title: String, note: String, date: String) = "detail/$id/$title/$note/$date"
+    }
 }

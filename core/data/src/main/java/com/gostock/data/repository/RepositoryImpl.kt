@@ -47,13 +47,13 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateBody(id: String, body: PostNoteBody): ApiResult<Unit> {
+    override suspend fun updateNote(id: String, body: PostNoteBody): ApiResult<Unit> {
         return handleApi {
             apiService.updateNote(id, body)
         }
     }
 
-    override suspend fun deleteBody(id: String): ApiResult<Unit> {
+    override suspend fun deleteNote(id: String): ApiResult<Unit> {
         return handleApi {
             apiService.deleteNote(id)
         }

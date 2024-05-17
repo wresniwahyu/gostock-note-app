@@ -2,6 +2,8 @@ package com.gostock.data.di
 
 import com.gostock.data.usecase.AddNoteUseCase
 import com.gostock.data.usecase.AddNoteUseCaseImpl
+import com.gostock.data.usecase.DeleteNoteUseCase
+import com.gostock.data.usecase.DeleteNoteUseCaseImpl
 import com.gostock.data.usecase.GetNotesUseCase
 import com.gostock.data.usecase.GetNotesUseCaseImpl
 import com.gostock.data.usecase.LoginUseCase
@@ -10,6 +12,8 @@ import com.gostock.data.usecase.LogoutUseCase
 import com.gostock.data.usecase.LogoutUseCaseImpl
 import com.gostock.data.usecase.RegisterUseCase
 import com.gostock.data.usecase.RegisterUseCaseImpl
+import com.gostock.data.usecase.UpdateNoteUseCase
+import com.gostock.data.usecase.UpdateNoteUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -43,5 +47,15 @@ abstract class UseCaseModule {
     abstract fun provideAddNoteUseCase(
         impl: AddNoteUseCaseImpl
     ): AddNoteUseCase
+
+    @Binds
+    abstract fun provideUpdateNoteUseCase(
+        impl: UpdateNoteUseCaseImpl
+    ): UpdateNoteUseCase
+
+    @Binds
+    abstract fun provideDeleteNoteUseCase(
+        impl: DeleteNoteUseCaseImpl
+    ): DeleteNoteUseCase
 
 }
