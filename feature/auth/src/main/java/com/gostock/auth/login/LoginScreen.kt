@@ -12,6 +12,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,32 +21,61 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.gostock.auth.R
 import com.gostock.ui.component.AppButton
 import com.gostock.ui.component.AppTextField
 import com.gostock.ui.theme.LightGrey
 import com.gostock.util.constant.Screens
+import com.gostock.util.extension.showToast
 
 @Composable
 fun LoginScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
-    LoginContent(navController = navController)
+
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.event.collect { event ->
+            when (event) {
+                is LoginViewModel.Event.LoginSuccess -> {
+                    navController.navigate(Screens.Home.route) {
+                        popUpTo(Screens.Home.route) { inclusive = true }
+                    }
+                }
+
+                is LoginViewModel.Event.ShowMessage -> {
+                    context.showToast(event.message)
+                }
+            }
+        }
+    })
+
+    LoginContent(
+        navController = navController,
+        viewModel = viewModel
+    )
 }
 
 @Composable
 fun LoginContent(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel
 ) {
+
+    val context = LocalContext.current
+    val state by viewModel.state.collectAsState()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -90,9 +121,10 @@ fun LoginContent(
 
             AppButton(
                 modifier = Modifier.padding(horizontal = 12.dp),
-                text = stringResource(id = R.string.login)
+                text = stringResource(id = R.string.login),
+                isLoading = state.isLoading
             ) {
-
+                viewModel.login(username = email, password = password)
             }
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -106,7 +138,8 @@ fun LoginContent(
             }
         }
         Text(
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier
+                .padding(bottom = 24.dp)
                 .clickable {
                     navController.navigate(Screens.Register.route)
                 },
